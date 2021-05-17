@@ -1,6 +1,6 @@
 #include "antiRebote.h"
 
-int estado_anteriorb;                                               //Estado real del boton sin rebotes
+int estado_anteriorb;                                              //Estado real del boton sin rebotes
 int estado_botonb;
 
 unsigned long lastDebounceTime = 0;                                // ultimo momento que el pin ha cambiado
@@ -11,7 +11,7 @@ bool ciclo;
 void pulsador_config (){
   //Serial.begin(9600);
   DDRA = 0b11111110;
-  estado_anteriorb = (PINA & (1 <<PA7));                                               //Estado real del boton sin rebotes
+  estado_anteriorb = (PINA & (1 <<PA7));                            //Estado real del boton sin rebotes
   estado_botonb = estado_anteriorb;
 }
 
@@ -30,9 +30,9 @@ bool pulsador_cicloA (){
       if (estado_botonb == HIGH) {                                   //Detecto flanco ascendente, poner LOW para detectar flanco descendente
         ciclo =! ciclo;
         //Serial.println(ciclo);
-        return (ciclo);
+        return (ciclo);                                              //Devuelve el ciclo actual
         }
       }
     }
-    estado_anteriorb = sensorValb;                                      //Sin esto no funciona, actualizo para el siguente loop 
+    estado_anteriorb = sensorValb;                                    //Sin esto no funciona, actualizo para el siguente loop 
 }

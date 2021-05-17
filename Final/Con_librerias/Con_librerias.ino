@@ -1,5 +1,6 @@
 #include "antiRebote.h"
 
+//Define pines:
 int columnaPIN[8] = {53, 52, 51, 50, 10, 11, 12, 13};
 int filaPIN[8] = {37, 36, 35, 34, 33, 32, 31, 30};
 
@@ -29,7 +30,7 @@ int N[8][8] = {
 };
 
 void setup() {
-  for(int i = 0; i <= 8; i++){
+  for(int i = 0; i <= 8; i++){                                                              //Pines como salida
     pinMode(columnaPIN[i], OUTPUT);
     pinMode(filaPIN[i], OUTPUT);
   }
@@ -40,7 +41,7 @@ void setup() {
 }
 
 void loop() {
-  if(pulsador_cicloA() == 1){
+  if(pulsador_cicloA() == 1){                                                               //Si el ciclo que devuelve la libreria antiRebote es 1, imprime A, caso contrario N.
     for(int columna = 0; columna <= 7; columna++){
       digitalWrite(columnaPIN[columna], LOW);
       for(int fila = 0; fila <= 7; fila++){
@@ -67,7 +68,7 @@ void loop() {
   }
 }
 
-void limpieza(){
+void limpieza(){                                                                            //Realiza una limpieza de los led. Reinicio.
   for(int columna = 0; columna <= 7; columna++){
     digitalWrite(columnaPIN[columna], HIGH);
     for(int fila = 0; fila <= 7; fila++){
