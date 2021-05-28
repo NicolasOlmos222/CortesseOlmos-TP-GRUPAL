@@ -27,6 +27,7 @@ void setup() {
   pulsador_config();
   Serial.begin(9600);
   dht.begin();
+  
   Serial.println(F("Inicializando lector SD.."));
   if (!SD.begin(4)){
     Serial.println(F("Error al iniciar lector SD"));
@@ -39,6 +40,7 @@ void loop() {
     for(int i=0; i < 4; i++){
       datos.tipo = letra[i];
       Serial.print(datos.tipo); Serial.print(" ");
+      
       switch (i){
         case 0:
           datos.lectura = lecturaPote();
@@ -57,6 +59,7 @@ void loop() {
           Serial.print(datos.lectura); Serial.print(" ");
         break;
       }
+      
       datos.tiempo = millis();
       Serial.print(datos.tiempo); Serial.println("");
 
@@ -68,25 +71,21 @@ void loop() {
         logFile.close();
       } else Serial.println("Error al abrir el archivo");
     }
-    }
-    
-      
-      if (isnan(t)) {
-        Serial.println("Error obteniendo los datos del sensor DHT11");
-        return;
-      } 
-      
-      
+  }   
+  if (isnan(t)) {
+    Serial.println("Error obteniendo los datos del sensor DHT11");
+    return;
+  } 
 }
 
 //Funciones:
 float lecturaDHT(bool modo){
   switch(modo){
     case temperatura:
-    t = dht.readTemperature();
+      t = dht.readTemperature();
     break;
     case humedad:
-    t = dht.readHumidity();
+      t = dht.readHumidity();
     break;
   }
   return(t);
