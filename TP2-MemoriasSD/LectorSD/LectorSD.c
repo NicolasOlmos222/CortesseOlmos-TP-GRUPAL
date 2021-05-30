@@ -4,7 +4,7 @@
 #define SSpin 53		// Slave Select en pin digital 53
 
 FILE * ptr;          // puntero del archivo
-ptr = fopen("PRUEBA2.txt", "r");		// definimos el archivo a abrir para su lectura unicamente
+ptr = fopen("PRUEBA2.bin", "r");		// definimos el archivo a abrir para su lectura unicamente
 
 void setup() {
   Serial.begin(9600);				// inicializa monitor serie a 9600 bps
@@ -23,7 +23,7 @@ void setup() {
     }
     archivo.close();				// cierre de archivo
   } else {
-    Serial.println("Error en la apertura de prueba.txt");// texto de falla en apertura de archivo
+    Serial.println("Error en la apertura de prueba.bin");// texto de falla en apertura de archivo
   }
 }
 
