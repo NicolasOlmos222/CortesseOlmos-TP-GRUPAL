@@ -21,14 +21,14 @@ char letra[4] = {'p', 'r', 't', 'h'};
 float t = 0.0;
 
 File logFile;
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
 
 void setup() {
-  pulsador_config();
+  pulsador_config();                                                                                                //Setup antirrebote
   Serial.begin(9600);
-  dht.begin();
+  dht.begin();                                                                                                      //Inicializacion DHT
   
-  Serial.println(F("Inicializando lector SD.."));
+  Serial.println(F("Inicializando lector SD.."));                                                                   //Inicialziacion LectorSD
   if (!SD.begin(4)){
     Serial.println(F("Error al iniciar lector SD"));
     return;
@@ -36,8 +36,9 @@ void setup() {
 }
 
 void loop() {
-  if(pulsador_cicloA ()){   
-    for(int i=0; i < 4; i++){
+  if(pulsador_cicloA ()){                                                                                           //Cuando se pulsa el boton lee los sensores
+    datos.tiempo = millis() - datos.tiempo;
+    for(int i=0; i < 4; i++){                                                                                       //Guarda las lecturas
       datos.tipo = letra[i];
       Serial.print(datos.tipo); Serial.print(" ");
       
@@ -59,15 +60,12 @@ void loop() {
           Serial.print(datos.lectura); Serial.print(" ");
         break;
       }
-      
-      datos.tiempo = millis();
       Serial.print(datos.tiempo); Serial.println("");
-
-      logFile = SD.open("prueba2.txt", FILE_WRITE);
+      logFile = SD.open("Lectur.bin", FILE_WRITE);                                                                //Abre y escribe en la SD                                        
       if(logFile){      
-        logFile.print(datos.tipo, BIN);      logFile.print(" ");  
-        logFile.print(datos.lectura, BIN);   logFile.print(" ");  
-        logFile.println(datos.tiempo, BIN);
+        logFile.print(datos.tipo);      logFile.print("   ");  
+        logFile.print(datos.lectura);   logFile.print("   ");  
+        logFile.println(datos.tiempo);
         logFile.close();
       } else Serial.println("Error al abrir el archivo");
     }
@@ -92,9 +90,9 @@ float lecturaDHT(bool modo){
 }
 
 int lecturaPote(){
-  return(map(analogRead(POTEPIN), 0, 1023, 0, 100));
+  return(map(analogRead(POTEPIN), 0, 1023, 0, 100));                                                                //Devuelve un %
 }
 
-uint16_t lecturaPote1(){
+int lecturaPote1(){
   return(analogRead(POTEPIN1));
 }
