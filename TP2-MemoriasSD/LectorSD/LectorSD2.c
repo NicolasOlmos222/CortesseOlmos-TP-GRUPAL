@@ -18,7 +18,7 @@ int main(){
  		}     
     }
     fclose(archivo);
-    printf("h: humedad [porcentaje]\nt: temperatura [*C]\nr: resistencia [ohm]\np: porcentaje de potenciometro [porcentaje]\ndifer de tiempo: ms");
+    printf("h: humedad [porcentaje]\nt: temperatura [*C]\nr: resistencia [ohm]\np: porcentaje de potenciometro [porcentaje]\ndifer de tiempo: ms\n");
     system("PAUSE");
 	return 0;
 }
