@@ -37,6 +37,7 @@ void setup() {
 
 void loop() {
   if(pulsador_cicloA ()){   
+    datos.tiempo = millis() - datos.tiempo;
     for(int i=0; i < 4; i++){
       datos.tipo = letra[i];
       Serial.print(datos.tipo); Serial.print(" ");
@@ -59,15 +60,12 @@ void loop() {
           Serial.print(datos.lectura); Serial.print(" ");
         break;
       }
-      
-      datos.tiempo = millis();
       Serial.print(datos.tiempo); Serial.println("");
-
-      logFile = SD.open("prueba2.txt", FILE_WRITE);
+      logFile = SD.open("Lectur.bin", FILE_WRITE);
       if(logFile){      
-        logFile.print(datos.tipo, BIN);      logFile.print(" ");  
-        logFile.print(datos.lectura, BIN);   logFile.print(" ");  
-        logFile.println(datos.tiempo, BIN);
+        logFile.print(datos.tipo);      logFile.print("   ");  
+        logFile.print(datos.lectura);   logFile.print("   ");  
+        logFile.println(datos.tiempo);
         logFile.close();
       } else Serial.println("Error al abrir el archivo");
     }
@@ -95,6 +93,6 @@ int lecturaPote(){
   return(map(analogRead(POTEPIN), 0, 1023, 0, 100));
 }
 
-uint16_t lecturaPote1(){
+int lecturaPote1(){
   return(analogRead(POTEPIN1));
 }
