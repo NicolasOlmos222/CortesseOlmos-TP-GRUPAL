@@ -19,6 +19,7 @@ struct data{
 data datos;
 char letra[4] = {'p', 'r', 't', 'h'};
 float t = 0.0;
+unsigned long tiempoReg;
 
 File logFile;
 DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
@@ -33,11 +34,13 @@ void setup() {
     Serial.println(F("Error al iniciar lector SD"));
     return;
   } Serial.println(F("Lector SD iniciado correctamente"));
+  tiempoReg = millis();
 }
 
 void loop() {
   if(pulsador_cicloA ()){                                                                                           //Cuando se pulsa el boton lee los sensores
-    datos.tiempo = millis() - datos.tiempo;
+    datos.tiempo = millis() - tiempoReg;
+    tiempoReg = millis();
     for(int i=0; i < 4; i++){                                                                                       //Guarda las lecturas
       datos.tipo = letra[i];
       Serial.print(datos.tipo); Serial.print(" ");
