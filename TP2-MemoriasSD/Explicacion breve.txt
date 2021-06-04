@@ -1,0 +1,6 @@
+Utilizamos para la medicion:
+-Sensor de temperatura DHT (humedad y temperatura).
+-Potenciometro en el que medimos a partir de una convercion el porcentaje en el que esta de 0 a 100%.
+-Potencimetro que nos devuelve la lectura analogica.
+
+Con un pulsador decidimos cuando queremos hacer la lectura
