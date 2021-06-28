@@ -19,7 +19,7 @@ unsigned long tiempoReg;
 String datoSensor;
 DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
 
-void setup(){
+void setup(){                                                                                             
   dht.begin();                                                                                                      //Inicializacion DHT
   tiempoReg = millis();
 }
@@ -31,34 +31,29 @@ void loop(){
     
     if(datoSensor == "P"){                                                                                            //Segun la letra recibida se lee el sensor deseado
       datos.lectura = lecturaPote();
-      Serial.print(datos.lectura); Serial.print("% ");
+      Serial.println(datos.lectura);
       tiempo();
     }else if(datoSensor == "R"){
       datos.lectura = lecturaPote1();
-      Serial.print(datos.lectura); Serial.print("ohm ");
+      Serial.println(datos.lectura);
       tiempo();
     }else if(datoSensor == "T"){
       datos.lectura = lecturaDHT(temperatura);
-      Serial.print(datos.lectura); Serial.print("ºC ");
+      Serial.println(datos.lectura);
       tiempo();
     }else if(datoSensor == "H"){
      datos.lectura = lecturaDHT(humedad);
-     Serial.print(datos.lectura); Serial.print("% ");
+     Serial.println(datos.lectura);
      tiempo(); 
-    }else Serial.println("Letra no valida.");
+    }else Serial.println("X");
   }
-  
-  if (isnan(t)) {
-    Serial.println("Error obteniendo los datos del sensor DHT11");
-    return;
-  } 
 }
 
 //Funciones:
 void tiempo(){                                                                                                //Calcula el tiempo desde la ultima lectura
   datos.tiempo = millis() - tiempoReg;
   tiempoReg = millis();
-  Serial.print("-- Tiempo desde ultima lectura: "); Serial.print(datos.tiempo); Serial.println("ms");
+  Serial.println(datos.tiempo);
 }
 
 float lecturaDHT(bool modo){
