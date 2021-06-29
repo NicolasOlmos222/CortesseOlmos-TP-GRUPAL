@@ -1,24 +1,40 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include<string.h>
 #include <Windows.h>
 #include "rs-232.h"
 
 #define LONG_BUFFER 4096
 
-int puertoCOM=3;             																	//Seleccion de puerto
-int baudios=9600;            																	//Velocidad en baudios
-char modo[]={'8','N','1',0}; 																	// 8 bits de datos, no paridad, 1 bit de parada
+int puertoCOM = 3;
+int baudios = 9600;
+char modo[] = {'8', 'n', '1', 0};
 
 unsigned char bufferRecepcion[LONG_BUFFER];
-char inicial;
 int cantidadBytes;
-  
+char inicial;
+
 int main(){
-	if(RS232_OpenComport(puertoCOM, baudios, modo, 0)){											//Prueba de puerto
-    	printf("No se puede abrir el puerto COM\n");
-    	return(0);
-  	}
+	if(RS232_OpenComport(puertoCOM, baudios, modo, 0)){
+    	printf("No se puedo abrir el puerto COM\n");
+    	return 0;
+	}
+	
+	typedef struct {
+    unsigned long tiempo;
+    int sensor;
+    char Lsensor;
+}temperatura, humedad;
+
+union temperatura{
+    temperatura dato;
+    byte t[sizeof(temperatura)];
+}medicion;
+
+/*union humedad{
+    temperatura dato;
+    byte h[sizeof(humedad)];
+}medicion;*/
+
 	printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
 	
   	while(TRUE){
@@ -26,13 +42,11 @@ int main(){
   		//printf("%c", inicial);
   		if(!strcmp(&inicial, "T")){
   			RS232_SendByte(puertoCOM, 'T');
-  			cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
-  			if(cantidadBytes > 0){
-      			bufferRecepcion[cantidadBytes] = 0;   // Poner un NULL al final del string
-				printf("%s\n", (char *)bufferRecepcion);
-				printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
-    		}
-		}else if(!strcmp(&inicial, "H")){
+  			if(cantidadBytes = RS232_PollComport(puertoCOM, medicion.t, sizeof(temperatura))){
+    		printf("El sensor es %c\n", temperatura.tiempo);
+}
+    }
+		/*}else if(!strcmp(&inicial, "H")){
 			RS232_SendByte(puertoCOM, 'H');
   			cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
   			if(cantidadBytes > 0){
@@ -55,7 +69,7 @@ int main(){
       			bufferRecepcion[cantidadBytes] = 0;   // Poner un NULL al final del string
 				printf("%s\n", (char *)bufferRecepcion);
 				printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
-    		}
+    		}*/
 		}
-	}
+	
 }
