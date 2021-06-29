@@ -18,37 +18,37 @@ if(RS232_OpenComport(puertoCOM, baudios, modo, 0)){
     printf("No se puedo abrir el puerto COM\n");
     return 0;
 }
-
+(
 while(TRUE){
-typedef struct{
+
+typedef struct {
     unsigned long tiempo;
     uint16_t sensor;
     char Lsensor;
-}temperatura, humedad;
+}temperatura, humedad, potenciometro1, potenciometro2;
 
-union temperatura{
-    temperatura dato;
-    byte t[sizeof(temperatura)];
+union informacion{
+    informacion dato;
+    byte i[sizeof(temperatura, humedad, potenciometro1, potenciometro2)];
 }medicion;
 
-union humedad{
-    temperatura dato;
-    byte h[sizeof(humedad)];
-}medicion;
+  printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
+  scanf("%c", &inicial);
 
-datosRecibidos = temperatura, humedad;
-String datosRecibidos;
-
-for(unsigned long long i=0; i<sizeof(temperatura); i++){
-  if(datosRecibidos == "E")
-    {
-      printf("", medicion.t);
-    }
-    else if (datosRecibidos == "A")
-    {
-      printf("", medicion.h);
-    }
-
+  if(!strcmp(&inicial, "T")){
+    rs232_SendByte(puertoCOM, 'T');
   }
-}
+  else if(!strcmp(&inicial, "H")){
+    rs232_SendByte(puertoCOM, 'H');
+  }
+   else if(!strcmp(&inicial, "P")){
+    rs232_SendByte(puertoCOM, 'P');
+  }
+   else if(!strcmp(&inicial, "R")){
+    rs232_SendByte(puertoCOM, 'R');
+  }
+
+if(cantidadBytes = RS232_PollComport(puertoCom, medicion.i, sizeof(temperatura, humedad, potenciometro1, potenciometro2))){
+  printf("%c\n", medicion.i);
+ }
 }
