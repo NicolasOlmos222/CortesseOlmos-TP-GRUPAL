@@ -49,7 +49,7 @@ void loop(){
     }else Serial.println("Letra no valida.");
   }
   
-  if (isnan(t)) {
+  if (isnan(t)) {                                                                                                       //Se comprueba que el sensor de temperatura esta funcionando
     Serial.println("Error obteniendo los datos del sensor DHT11");
     return;
   } 

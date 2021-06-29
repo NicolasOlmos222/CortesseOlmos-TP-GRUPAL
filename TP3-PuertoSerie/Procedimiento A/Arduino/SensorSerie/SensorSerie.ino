@@ -86,7 +86,7 @@ void tiempo(){                                                                  
   }
 }
 
-void envioDato(){
+void envioDato(){                                                                                               //Envia los datos byte a byte
   a.valor = datos.lectura;
   //Serial.println(a.valor);    
   for(int y=0 ; y < sizeof(a.valor) ; y++){

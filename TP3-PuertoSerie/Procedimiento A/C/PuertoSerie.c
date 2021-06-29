@@ -23,7 +23,7 @@ int main(){
 	union datos{
 		struct sensor dato;
 		byte a[sizeof(struct sensor)];
-	}mediciones;
+	}lecturas;
 	
 	if(RS232_OpenComport(puertoCOM, baudios, modo, 0)){
     	printf("No se puedo abrir el puerto COM\n");
@@ -49,11 +49,11 @@ int main(){
 			RS232_SendByte(puertoCOM, 'R');	
 		}
 		
-		cantidadBytes = RS232_PollComport(puertoCOM, mediciones.a, sizeof(struct sensor)-1);
+		cantidadBytes = RS232_PollComport(puertoCOM, lecturas.a, sizeof(struct sensor)-1);
 		if(cantidadBytes > 1){
-			mediciones.a[cantidadBytes] = 0;
-  			printf("Lectura de %c :%d\n", inicial, mediciones.dato.lectura);
-  			printf("Tiempo desde ultima lectura: %lu\n", mediciones.dato.tiempo);
+			lecturas.a[cantidadBytes] = 0;
+  			printf("Lectura de %c :%d\n", inicial, lecturas.dato.lectura);
+  			printf("Tiempo desde ultima lectura: %lu\n", lecturas.dato.tiempo);
   			cantidadBytes = 0;
  		}
 }
