@@ -12,13 +12,14 @@
 struct data{
   uint32_t tiempo;
   uint16_t lectura;
+  String nombre;
 };
 data datos;
 float t = 0.0;
 unsigned long tiempoReg;
 String datoSensor;
 DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
-
+int i;
 void setup(){
   dht.begin();                                                                                                      //Inicializacion DHT
   tiempoReg = millis();
@@ -30,10 +31,19 @@ void loop(){
     datoSensor = Serial.readString();                                                                                 //Lectura de letra indicativa
     //Serial.print("OK");
     //Serial.println(datoSensor);
-    if(datoSensor == "P"){                                                                                            //Segun la letra recibida se lee el sensor deseado
-      datos.lectura = lecturaPote();
-      Serial.print(datos.lectura); //Serial.print("% ");
+    if(datoSensor == "P"){                                                                                             //Segun la letra recibida se lee el sensor deseado
+      datos.nombre = "PYHJG";
+      datos.lectura = String lecturaPote();
       tiempo();
+      for(i = 0; i < sizeof(datos.nombre);i++){
+        Serial.print(datos.nombre[i]);
+      }
+      for(i = 0; i < sizeof(datos.lectura);i++){
+        Serial.print(datos.lectura[i]);
+      }
+      for(i = 0; i < sizeof(datos.tiempo);i++){
+        Serial.print(datos.tiempo[i]);
+      }
     }else if(datoSensor == "R"){
       datos.lectura = lecturaPote1();
       Serial.print(datos.lectura); //Serial.print("ohm ");
