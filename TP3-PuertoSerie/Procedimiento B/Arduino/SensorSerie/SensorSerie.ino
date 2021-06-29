@@ -19,41 +19,47 @@ unsigned long tiempoReg;
 String datoSensor;
 DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
 
-void setup(){                                                                                             
+void setup(){
   dht.begin();                                                                                                      //Inicializacion DHT
   tiempoReg = millis();
+  Serial.begin(9600);
 }
 
 void loop(){
   if(Serial.available()>0){
     datoSensor = Serial.readString();                                                                                 //Lectura de letra indicativa
+    //Serial.print("OK");
     //Serial.println(datoSensor);
-    
     if(datoSensor == "P"){                                                                                            //Segun la letra recibida se lee el sensor deseado
       datos.lectura = lecturaPote();
-      Serial.println(datos.lectura);
+      Serial.print(datos.lectura); Serial.print("% ");
       tiempo();
     }else if(datoSensor == "R"){
       datos.lectura = lecturaPote1();
-      Serial.println(datos.lectura);
+      Serial.print(datos.lectura); Serial.print("ohm ");
       tiempo();
     }else if(datoSensor == "T"){
       datos.lectura = lecturaDHT(temperatura);
-      Serial.println(datos.lectura);
+      Serial.print(datos.lectura); Serial.print("C ");
       tiempo();
     }else if(datoSensor == "H"){
      datos.lectura = lecturaDHT(humedad);
-     Serial.println(datos.lectura);
+     Serial.print(datos.lectura); Serial.print("% ");
      tiempo(); 
-    }else Serial.println("X");
+    }else Serial.println("Letra no valida.");
   }
+  
+  if (isnan(t)) {
+    Serial.println("Error obteniendo los datos del sensor DHT11");
+    return;
+  } 
 }
 
 //Funciones:
 void tiempo(){                                                                                                //Calcula el tiempo desde la ultima lectura
   datos.tiempo = millis() - tiempoReg;
   tiempoReg = millis();
-  Serial.println(datos.tiempo);
+  Serial.print("-- Tiempo desde ultima lectura: "); Serial.print(datos.tiempo); Serial.println("ms");
 }
 
 float lecturaDHT(bool modo){
