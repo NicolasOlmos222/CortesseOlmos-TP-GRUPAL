@@ -10,16 +10,21 @@
 
 //Variables:
 struct data{
-  uint32_t tiempo;
-  uint16_t lectura;
+  unsigned long tiempo;
+  unsigned long lectura;
   String nombre;
 };
 data datos;
+
+union dt{
+  unsigned long valor;
+  byte b[7];
+}a, c;
+
 float t = 0.0;
 unsigned long tiempoReg;
 String datoSensor;
 DHT dht(DHTPIN, DHTTYPE);                                                                                           //Definicion pines DHT
-int i;
 void setup(){
   dht.begin();                                                                                                      //Inicializacion DHT
   tiempoReg = millis();
@@ -29,33 +34,42 @@ void setup(){
 void loop(){
   if(Serial.available()>0){
     datoSensor = Serial.readString();                                                                                 //Lectura de letra indicativa
-    //Serial.print("OK");
+    //Serial.println("OK");
     //Serial.println(datoSensor);
+    
     if(datoSensor == "P"){                                                                                             //Segun la letra recibida se lee el sensor deseado
-      datos.nombre = "PYHJG";
-      datos.lectura = String lecturaPote();
+      datos.nombre = "P";
+      datos.lectura = lecturaPote();
+
+      //Envio:
+      //Serial.println(datos.nombre);
+      envioDato();
       tiempo();
-      for(i = 0; i < sizeof(datos.nombre);i++){
-        Serial.print(datos.nombre[i]);
-      }
-      for(i = 0; i < sizeof(datos.lectura);i++){
-        Serial.print(datos.lectura[i]);
-      }
-      for(i = 0; i < sizeof(datos.tiempo);i++){
-        Serial.print(datos.tiempo[i]);
-      }
+      
     }else if(datoSensor == "R"){
       datos.lectura = lecturaPote1();
-      Serial.print(datos.lectura); //Serial.print("ohm ");
+      
+      //Envio:
+      //Serial.println(datos.nombre);
+      envioDato();
       tiempo();
+      
     }else if(datoSensor == "T"){
       datos.lectura = lecturaDHT(temperatura);
-      Serial.print(datos.lectura); //Serial.print("C ");
+      
+      //Envio:
+      //Serial.println(datos.nombre);
+      envioDato();
       tiempo();
+      
     }else if(datoSensor == "H"){
      datos.lectura = lecturaDHT(humedad);
-     Serial.print(datos.lectura); //Serial.print("% ");
-     tiempo(); 
+     
+     //Envio:
+      //Serial.println(datos.nombre);
+      envioDato();
+      tiempo();
+      
     }//else Serial.println("Letra no valida.");
   }
 }
@@ -64,7 +78,26 @@ void loop(){
 void tiempo(){                                                                                                //Calcula el tiempo desde la ultima lectura
   datos.tiempo = millis() - tiempoReg;
   tiempoReg = millis();
-  Serial.println(datos.tiempo);// Serial.println("ms");
+  //Serial.println(datos.tiempo); Serial.println("ms");
+  a.valor = datos.tiempo;
+  //Serial.println(a.valor);    
+  for(int y=0 ; y < sizeof(a.valor) ; y++){
+    c.b[y] = a.b[y];
+  }   
+  for(unsigned long long i = 0; i < (sizeof(c.b));i++){
+    Serial.write(c.b[i]);
+  }
+}
+
+void envioDato(){
+  a.valor = datos.lectura;
+  //Serial.println(a.valor);    
+  for(int y=0 ; y < sizeof(a.valor) ; y++){
+    c.b[y] = a.b[y];
+  }   
+  for(unsigned long long i = 0; i < (sizeof(c.b));i++){
+    Serial.write(c.b[i]);
+  }
 }
 
 float lecturaDHT(bool modo){

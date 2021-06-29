@@ -9,7 +9,7 @@ int puertoCOM = 3;
 int baudios = 9600;
 char modo[] = {'8', 'n', '1', 0};
 
-unsigned char bufferRecepcion[LONG_BUFFER];
+unsigned long bufferRecepcion[LONG_BUFFER];
 int cantidadBytes;
 char inicial;
 
@@ -23,12 +23,12 @@ int main(){
     unsigned long tiempo;
     int sensor;
     char Lsensor;
-}temperatura, humedad;
+}medicion;
 
 union temperatura{
-    temperatura dato;
-    byte t[sizeof(temperatura)];
-}medicion;
+    unsigned long a;
+    char t[sizeof(medicion)];
+}valor;
 
 /*union humedad{
     temperatura dato;
@@ -42,34 +42,23 @@ union temperatura{
   		//printf("%c", inicial);
   		if(!strcmp(&inicial, "T")){
   			RS232_SendByte(puertoCOM, 'T');
-  			if(cantidadBytes = RS232_PollComport(puertoCOM, medicion.t, sizeof(temperatura))){
-    		printf("El sensor es %c\n", temperatura.tiempo);
-}
-    }
-		/*}else if(!strcmp(&inicial, "H")){
+  		
+		}else if(!strcmp(&inicial, "H")){
 			RS232_SendByte(puertoCOM, 'H');
-  			cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
-  			if(cantidadBytes > 0){
-      			bufferRecepcion[cantidadBytes] = 0;   // Poner un NULL al final del string
-				printf("%s\n", (char *)bufferRecepcion);
-				printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
-    		}
+  			
 		}else if(!strcmp(&inicial, "P")){
 			RS232_SendByte(puertoCOM, 'P');
-  			cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
-  			if(cantidadBytes > 0){
-      			bufferRecepcion[cantidadBytes] = 0;   // Poner un NULL al final del string
-				printf("%s\n", (char *)bufferRecepcion);
-				printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
-    		}
+  			
 		}else if(!strcmp(&inicial, "R")){
-			RS232_SendByte(puertoCOM, 'R');
-  			cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
-  			if(cantidadBytes > 0){
-      			bufferRecepcion[cantidadBytes] = 0;   // Poner un NULL al final del string
-				printf("%s\n", (char *)bufferRecepcion);
-				printf("Ingrese la inicial del sensor deseado (P, R, T, H): ");
-    		}*/
+			RS232_SendByte(puertoCOM, 'R');	
 		}
-	
+		
+		cantidadBytes = RS232_PollComport(puertoCOM, bufferRecepcion, LONG_BUFFER-1);
+		
+		if(cantidadBytes > 0){
+			bufferRecepcion[cantidadBytes] = 0;
+			printf("%c", bufferRecepcion);
+		}
+		
+	}
 }
